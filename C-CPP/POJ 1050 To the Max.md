@@ -85,3 +85,23 @@
       return 0;
     }
  
+## Tips
+1. Find the max-sequence in 1-D array:
+
+if dp[i-1] > 0，  dp[i] = dp[i-1] + a[i]
+
+if dp[i-1] < 0，  dp[i] = a[i]
+
+2.For 2-D matrix:
+
+Add the same columns in differenr rows
+
+3.How to achieve O(n^2logn)?
+
+Segment tree
+
+    for r1 in range(0,N-1):
+        for r2 in range(r1+1, N):
+            for index, value in non_empty_items[r2]:
+                segment_tree.insert(index, value)
+            ans = max(ans, segment_tree.max_segment(0,N))
