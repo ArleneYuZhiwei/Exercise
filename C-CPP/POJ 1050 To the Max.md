@@ -96,7 +96,7 @@ if dp[i-1] < 0，  dp[i] = a[i]
 
 Add the same columns in differenr rows
 
-3.How to achieve O(n^2logn)?
+3.How to achieve O(n^2logn) when there are only K*N nonzero numbers in the matrix? O(n^3logn) when the matrix is dense.
 
 Segment tree
 
