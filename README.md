@@ -1,4 +1,4 @@
-# LeetCode battle
+# Exercise
 An exercise a day keeps bugs away :）
 
 Solutions for problems from LeetCode (mainly), Poj and OpenJudge
