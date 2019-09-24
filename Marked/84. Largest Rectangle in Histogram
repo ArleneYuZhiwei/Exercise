@@ -1,0 +1,15 @@
+#Monotonous stack
+class Solution(object):
+    def largestRectangleArea(self, height):
+        stack=[] #存两个值，（我自己的位置和我能把最左边的谁弹出）
+        res=0
+        for idx,h in enumerate(height+[-1]):
+            t=idx #如果无法弹出已在栈中的数据，最左边能弹出的地方就是自己
+            while len(stack)>0 and height[stack[-1][0]]>h: #当前的高度低于栈顶元素，将栈弹出
+                t=stack[-1][1] #栈顶元素其实可以弹走的更左边的元素位置
+                ht=height[stack.pop()[0]] #结算就被弹走的这个元素，高度几何
+                res=max(res,ht*(idx-t))  #被弹走的元素面积，宽度为右边截止当下，左边延申至最远
+            stack.append((idx,t))
+        return res
+        
+     ###必须要注意：循环体内是否不小心更改了判别循环终止的条件！！！
