@@ -1,0 +1,90 @@
+0-1背包
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        candidates.sort() #排序之后
+        dp = [set() for i in xrange(target+1)] #从0到target值存放得到相应区间对应idx值的组合
+        dp[0].add(()) #初始条件是0，意味着不选任何元素做输入
+        for num in candidates: #遍历所有元素可能的使用
+            for t in xrange(target, num-1, -1): #从后往前考虑，小的数只被考虑了一次，从前往后考虑，小数先加了当前使用的元素，大数调用小数时可能又加一遍。。
+                for prev in dp[t-num]: #对于t-num中所有可能的组合，同时加上num后能转到状态t.如果dp[t-num]为空，则不加数据
+                    dp[t].add(prev + (num,))
+        return list(dp[-1]) 
+ 
+如果想返回所有小于target的元素，则考虑初始化不为空，
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        candidates.sort()
+        dp = [set([()]) for i in xrange(target+1)]
+        for num in candidates:
+            for t in xrange(target, num-1, -1):
+                for prev in dp[t-num]: #为空时也会加上
+                    dp[t].add(prev + (num,))
+        return list(dp[-1])
+        
+求得到target的dp的方案数目，不求具体方案：
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        candidates.sort()
+        dp = [0 for i in xrange(target+1)]
+        dp[0]=1
+        for num in candidates:
+            for t in xrange(target, num-1, -1):
+                dp[t]+=dp[t-num]
+        print dp[-1] 
+求小于target的总方案：
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        candidates.sort()
+        dp = [1 for i in xrange(target+1)]
+        for num in candidates:
+            for t in xrange(target, num-1, -1):
+                dp[t]+=dp[t-num]
+        print dp[-1] 
+        
+多重背包
+def zeroOnePack(c,m,v,ans):
+    for i in range(m,c-1,-1):
+        for s in ans[i-c]:
+            ans[i].add(s+v)
+def completePack(c,m,v,ans):
+    for i in range(c,m+1):
+        for s in ans[i-c]:
+            ans[i].add(s+v)
+def multiPack(c,n,m,ans):
+    items=[]
+    b=0
+    while n>(1<<b):
+        items.append(1<<b)
+        n-=(1<<b)
+        b+=1
+    if n:
+        items.append(n)
+    l=[]
+    for i in items:
+        if len(l)>i:
+            l=[]
+        while len(l)<i:
+            l.append(c)
+        zeroOnePack(c*i,m,tuple(l),ans)
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        ans=[set() for i in range(target+1)]
+        ans[0].add(())
+        z={}
+        for c in candidates:
+            if c not in z:
+                z[c]=0
+            z[c]+=1
+        n=len(z)
+        m=target
+        #i and c represent cost,m represent target,(i,)&v represent present value,ans is dp function. 
+        for i in z:
+            if i>m:
+                continue
+            if z[i]==1:
+                zeroOnePack(i,m,(i,),ans)
+            elif z[i]*i>=m:
+                completePack(i,m,(i,),ans)
+            else:
+                multiPack(i,z[i],m,ans)
+        return ans[target]
