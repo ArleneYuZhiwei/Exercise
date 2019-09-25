@@ -1,0 +1,37 @@
+def dfs(candidates,res,visited,lw):
+    res.append(visited)
+    if len(candidates)==0:
+        return
+    ks = [i for i in candidates]
+    vt = visited
+    for i in ks:
+        k=i
+        v=candidates[i]
+        if k==lw:
+            continue
+        for j in range(v-1):
+            visited+=k
+            candidates[k]-=1                
+            dfs(candidates,res,visited,k)
+        visited+=k
+        del candidates[k]
+        dfs(candidates,res,visited,k)
+        candidates[k]=v
+        visited=vt
+
+        
+class Solution(object):
+    def numTilePossibilities(self, tiles):
+        """
+        :type tiles: str
+        :rtype: int
+        """
+        res=[]
+        candidates={}
+        for i in tiles:
+            if i not in candidates:
+                candidates[i]=0
+            candidates[i]+=1
+        lw=''
+        dfs(candidates,res,'',lw)
+        return len(res)-1
