@@ -1,0 +1,33 @@
+#Build Binary Tree accroding to given preorder sequence
+import bisect
+def dfs(p, l, r):
+    root = TreeNode(p[l])
+    m = l+1
+    while m<=r and p[m]<p[l]:
+        m+=1
+    if m-l>1:
+        root.left = dfs(p, l+1, m-1)
+    if m<=r:
+        root.right  = dfs(p, m, r)
+    return root
+
+class Solution(object):
+    def bstFromPreorder(self, preorder):
+        """
+        :type preorder: List[int]
+        :rtype: TreeNode
+        """
+        if len(preorder)==0:
+            return None
+        return dfs(preorder, 0, len(preorder)-1)
+        
+#LCA for binary  tree
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        if (not root) or (root==p) or (root==q):
+            return root
+        left=self.lowestCommonAncestor(root.left, p, q)
+        right=self.lowestCommonAncestor(root.right, p, q)
+        if left and right:
+            return root
+        return left or right
