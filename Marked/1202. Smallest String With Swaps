@@ -1,0 +1,54 @@
+def initial(n):
+  father=[i for i in range(n)]
+  cnt=[1 for i in range(n)]
+  return father,cnt
+ def top(x,father):
+  if father[x]!=x:
+    father[x]=top(father[x],father)
+  return father[x]
+  def union(x,y,father,cnt):
+   fx,fy=top(x,father),top(y,father)
+   if fx!=fy:
+    if cnt[fx]>cnt[fy]:
+        father[fy]=fx
+        cnt[fx]+=cnt[fy]
+    else:
+        father[fx]=fy
+        cnt[fy]+=cnt[fx]
+        
+     
+   class Solution:
+    def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
+        def initial(n):
+            father=[i for i in range(n)]
+            cnt=[1 for i in range(n)]
+            return father,cnt
+        def top(x,father):
+            if father[x]!=x:
+                father[x]=top(father[x],father)
+            return father[x]
+        def union(x,y,father,cnt):
+            fx,fy=top(father[x],father),top(father[y],father)
+            if fx!=fy:
+                if cnt[fx]>cnt[fy]:
+                    father[fy]=fx
+                    cnt[fx]+=cnt[fy]
+                else:
+                    father[fx]=fy
+                    cnt[fy]+=cnt[fx]
+        father,cnt=initial(len(s))
+        for i,j in pairs:
+            union(i,j,father,cnt)
+        union_chars={}
+        for idx,f in enumerate(father):
+            tf=top(idx,father)
+            if tf not in union_chars:
+                union_chars[tf]=[]
+            union_chars[tf].append(s[idx]) 
+        for k,v in union_chars.items():
+            v.sort(reverse=True)
+        res=''
+        for cid in father:
+            res+=union_chars[cid][-1]
+            union_chars[cid].pop()
+        return res
