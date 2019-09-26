@@ -45,7 +45,7 @@ def initial(n):
                 union_chars[tf]=[]
             union_chars[tf].append(s[idx]) 
         for k,v in union_chars.items():
-            v.sort(reverse=True)
+            v.sort(reverse=True)         #一定要reverse走出栈顶，否则走栈底会很慢
         res=''
         for cid in father:
             res+=union_chars[cid][-1]
