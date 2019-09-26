@@ -10,6 +10,5 @@ class Solution(object):
                 ht=height[stack.pop()[0]] #结算就被弹走的这个元素，高度几何
                 res=max(res,ht*(idx-t))  #被弹走的元素面积，宽度为右边截止当下，左边延申至最远
             stack.append((idx,t))
-        return res
-        
+        return res        
      ###必须要注意：循环体内是否不小心更改了判别循环终止的条件！！！
