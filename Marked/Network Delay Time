@@ -1,0 +1,76 @@
+INF =1e9+7
+path #存路径，存完整路径中坐标所对点的上一个点
+dis #i到j所对点之间的距离
+ret=[t] #源点到目标点的完整路径
+edges #邻接表
+INF = 1e9+7
+### pay attention to the loop order O(n^3)
+def floyd(edges):
+  n = len(edges)
+  dis = [[INF for _ in range(n)] for _ in range(n)]
+  path = [[-1 for _ in range(n)] for _ in range(n)]
+  for i in range(n):
+      dis[i][i] = 0
+      for t in edges[i]:
+          dis[i][t[0]]=t[1]
+          path[i][t[0]]=i
+  for k in range(n): # enumberate the middle point first!
+      for i in range(n):
+          for j in range(n):
+              if dis[i][k]!=INF and dis[k][j]!=INF and (dis[i][j]==INF or dis[i][j]>dis[i][k]+dis[k][j]):
+                  dis[i][j]=dis[i][k]+dis[k][j]
+                  path[i][j]=k
+  return dis, path
+### decode shortest path with specific source and target O(n)
+def getDis(dis, s, t):
+  return dis[s][t]
+def getPath(path, s, t):
+  if s==t:
+      return [s]
+  return getPath(path, s, path[s][t]) + getPath(path, path[s][t], t)[1:]
+ ###Floyd method 
+   def networkDelayTime(self, times, N, K):
+        INF =1e9+7
+        n=N
+        edges=[[] for i in range(n)]
+        dis=[[INF for i in range(n)] for j in range(n)]
+        path=[[-1 for i in range(n)] for j in range(n)]
+        for u,v,w in times:
+            edges[u-1].append([v-1,w])
+        for i in range(n):
+            dis[i][i]=0
+            for t in edges[i]:
+                dis[i][t[0]]=t[1]
+                path[i][t[0]]=i
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    if dis[i][k]!=INF and dis[k][j]!=INF and (dis[i][j]==INF or dis[i][j]>dis[i][k]+dis[k][j]):
+                        dis[i][j]=dis[i][k]+dis[k][j]
+                        path[i][j]=k
+        return max(dis[K-1])
+        
+###spfa methods:
+in_queue #允许某个点出队列之后，再进入队列更新，不允许在队列的时候又进来
+q #用于更新距离的bfs队列
+n=N
+edges=[[] for i in range(n)]
+dis=[INF for i in range(n)]
+path=[-1  for i in range(n)]
+for u,v,w in times:
+    edges[u-1].append([v-1,w])
+dis[K-1]=0
+in_queue=set([K-1])
+q=deque()
+q.append(K-1)
+while(len(q)):
+  i=q.popleft()            #对于已知点，去查查以它为转折点，是否能更新最短路径。
+  in_queue.discard(i)
+  for t in edges[i]:
+      if dis[i]+t[1]<dis[t[0]]:
+        dis[t[0]]=dis[i]+t[1]      
+        path[t[0]]=i
+        if t[0] not in in_queue:
+          in_queue.add(t[0])   #将edges中通过i的点更新
+          q.append(t[0])
+   ...
