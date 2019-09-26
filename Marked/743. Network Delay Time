@@ -1,0 +1,39 @@
+INF =1e9+7
+path #存路径，存完整路径中坐标所对点的上一个点
+dis #源点到下标所对点之间的距离
+in_set #目前已经和源点连通的点的集合
+dheap=[(0,s)]  #目前已知的点距离源点的距离 （distance to the source,the idx of current point）
+ret=[t] #源点到目标点的完整路径
+edges #邻接表
+
+import heapq
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], N: int, K: int) -> int:
+        INF =1e9+7
+        dis=[INF for i in range(N)]
+        path=[-1]*N
+        dis[K-1]=0  #初始化只用将源点自己加入
+        in_set=set()
+        edges=[[] for j in range(N)]
+        dheap=[]
+        for u,v,w in times:
+            edges[u-1].append([v-1,w]) #当前点到那个点，距离是多少
+        heapq.heappush(dheap,(0,K-1)) #源点
+        for _ in range(N):
+            if len(dheap)==0:
+                break
+            m=heapq.heappop(dheap)
+            while(len(dheap)>0 and m[1] in in_set):
+                m=heapq.heappop(dheap)
+            if m[1] in in_set:
+                break
+            in_set.add(m[1])
+            for t in edges[m[1]]:
+                if dis[t[0]]>m[0]+t[1]:
+                    dis[t[0]]=m[0]+t[1]
+                    path[t[0]]=m[1]
+                    heapq.heappush(dheap,(dis[t[0]],t[0]))
+        res=max(dis)
+        if res==INF:
+            return -1
+        return res
