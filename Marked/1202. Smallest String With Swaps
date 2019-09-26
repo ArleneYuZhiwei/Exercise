@@ -27,7 +27,7 @@ def initial(n):
                 father[x]=top(father[x],father)
             return father[x]
         def union(x,y,father,cnt):
-            fx,fy=top(father[x],father),top(father[y],father)
+            fx,fy=top(father[x],father),top(father[y],father) ###千万要记住这里是求top，不是father[x]
             if fx!=fy:
                 if cnt[fx]>cnt[fy]:
                     father[fy]=fx
