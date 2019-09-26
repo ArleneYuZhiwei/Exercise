@@ -16,7 +16,6 @@ def initial(n):
         father[fx]=fy
         cnt[fy]+=cnt[fx]
         
-     
    class Solution:
     def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
         def initial(n):
