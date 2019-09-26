@@ -40,7 +40,7 @@ class Solution(object):
             for t in xrange(target, num-1, -1):
                 dp[t]+=dp[t-num]
         print dp[-1] 
-        
+
 多重背包
 def zeroOnePack(c,m,v,ans):
     for i in range(m,c-1,-1):
