@@ -18,7 +18,6 @@ def dfs(candidates,res,visited,lw):
         dfs(candidates,res,visited,k)
         candidates[k]=v
         visited=vt
-
         
 class Solution(object):
     def numTilePossibilities(self, tiles):
