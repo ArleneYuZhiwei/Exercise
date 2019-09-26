@@ -1,0 +1,60 @@
+INF = 1e9+7
+##
+import heapq
+n=len(edges)
+s=0
+path=[-1]*n
+dis=[INF]*n
+dis[s]=0
+in_set=set()
+dheap=[(0,s)]
+ret=0
+for _ in range(n):
+  m=heap.heappop(dheap)
+  while (len(dheap)&& m[1] in in_set):
+    m=heapq.heappop(dheap)
+   if m[1] in in_set:
+      return -1,path
+   ret += m[0]
+   for t in edges[m[1]]:
+      if dis[t[0]]>t[1]:
+        dis[t[0]]=t[1]
+        path[t[0]]=m[1]
+        heapq.heappush(dheap,(dis[t[0]],t[0]))
+    in_set.add(t[0])
+    ret,path
+   
+   ##Kruskal
+class Solution:
+    def minCostToSupplyWater(self, n: int, wells: List[int], pipes: List[List[int]]) -> int:
+        N=n+1
+        edges=[[] for i in range(N)]
+        wells=[0]+wells
+        for i in range(N):
+            edges[0].append([i,wells[i]])
+            edges[i].append([0,wells[i]])
+        for i,j,w in pipes:
+            edges[i].append([j,w])
+            edges[j].append([i,w])
+        def top(x,father):
+            if father[x]!=x:
+                father[x]=top(father[x],father)
+            return father[x]
+        father=[i for i in range(N)]
+        es=[]
+        for i in range(N):
+            for t in edges[i]:
+                es.append((t[1],t[0],i))
+        es.sort()
+        ret=0
+        path=[]
+        for e in es:
+            fx=top(e[1],father)
+            fy=top(e[2],father)
+            if fx!=fy:
+                father[fx]=fy
+                path.append((e[1],e[2]))
+                ret+=e[0]
+                if len(path)==n:
+                    break
+        return ret
