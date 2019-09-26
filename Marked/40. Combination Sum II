@@ -54,7 +54,7 @@ def multiPack(c,n,m,ans):
     items=[]
     b=0
     while n>(1<<b):
-        items.append(1<<b)
+        items.append(1<<b) #把一个包拆成多个
         n-=(1<<b)
         b+=1
     if n:
