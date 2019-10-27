@@ -88,3 +88,34 @@ class Solution(object):
             else:
                 multiPack(i,z[i],m,ans)
         return ans[target]
+两台服务器放任务，有一个列表记录任务所需时间，问最短多少时间完成所有任务
+即：如何将任务平均分配至两台服务器
+tasks=[5,5,5,7,8]
+s=sum(tasks)
+l=sum(tasks)//2
+dp=[False for i in range(l+1)]
+dp[0]=True
+for i in tasks:
+    for t in range(l,i-1,-1):
+        if dp[t-i]:
+            dp[t]=True
+cnt=l
+while cnt>=0 and not dp[cnt]:
+    cnt-=1
+print (s-cnt)
+
+#Greedy 能够最快做完，但是可能的误差在最小两个数之差。必须先从大到小排序
+tasks=sorted(tasks,reverse=True)
+c1=[]
+c2=[]
+c1.append(tasks[0])
+s1=tasks[0]
+s2=0
+for i in range(1,len(tasks)):
+    if s1<s2:
+        s1+=tasks[i]
+        c1.append(tasks[i])
+    else:
+        s2+=tasks[i]
+        c2.append(tasks[i])
+print (max(s1,s2))
